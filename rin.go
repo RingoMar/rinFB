@@ -49,10 +49,15 @@ func MakeRequest() {
 
 	re2, _ := regexp.Compile("id=[0-9]+")
 	match3 := re2.FindString(string(body))
+	re3, _ := regexp.Compile("(<td class=\"[0-9a-zA-Z_]+\"><div>)")
 
-	res1 := strings.Split(match3, "=")
-	linkURI := "https://strims.gg/facebook/" + string(res1[1])
-	fmt.Println("Opening stream on strims: ", linkURI)
-	openBrowser(linkURI)
-
+	isOnline := re3.MatchString(string(body))
+	if isOnline {
+		res1 := strings.Split(match3, "=")
+		linkURI := "https://strims.gg/facebook/" + string(res1[1])
+		fmt.Println("Opening stream on strims: ", linkURI)
+		openBrowser(linkURI)
+	} else {
+		fmt.Println("This streamer is offline")
+	}
 }
